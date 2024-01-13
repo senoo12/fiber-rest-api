@@ -11,6 +11,7 @@ func ProductRoutes(app *fiber.App)  {
 		api.Get("", productsRepository.GetAllProducts)
 		api.Get("/:id", productsRepository.GetProductByID)
 		api.Post("/", productsRepository.CreateProducts)
+		api.Put("/:id", productsRepository.UpdateProduct)
 		api.Delete("/:id", productsRepository.DeleteProductByID)
 	})
 }
