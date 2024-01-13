@@ -8,7 +8,7 @@ import (
 
 func ProductRoutes(app *fiber.App)  {
 	app.Route("/products", func(api fiber.Router){
-		api.Get("/", productsRepository.GetAllProducts)
+		api.Get("", productsRepository.GetAllProducts)
 		api.Get("/:id", productsRepository.GetProductByID)
 		api.Post("/", productsRepository.CreateProducts)
 		api.Delete("/:id", productsRepository.DeleteProductByID)

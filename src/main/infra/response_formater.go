@@ -48,4 +48,3 @@ func ListResponseAPI(message string, status string, code int, data interface{}, 
 	return responseList
 }
 
-func DeleteResponseAPI(message string, status string, code int, )

@@ -7,6 +7,8 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"log"
+	"fmt"
+	"strconv"
 	"encoding/json"
 )
 
@@ -39,9 +41,16 @@ func GetAllProducts(c *fiber.Ctx) error {
 }
 
 func GetProductByID(c *fiber.Ctx) error  {
-	idProduct := c.Params("id")
+	idProductStr := c.Params("id")
+
+	idProduct, err := strconv.Atoi(idProductStr)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	rows, err := infra.DB.Query("SELECT * FROM `products` WHERE id = ?;", idProduct)
+	
+	fmt.Println(idProduct)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -59,6 +68,11 @@ func GetProductByID(c *fiber.Ctx) error  {
 		products = append(products, product)
 	}
 
+	if !rows.Next(){
+		responseFailed := infra.ResponseAPI("Products retrived failed", "failed", fiber.StatusBadRequest, products)
+		return c.JSON(responseFailed)
+	}
+
 	err = rows.Err()
 	if err != nil {
 		log.Fatal(err)
@@ -66,6 +80,8 @@ func GetProductByID(c *fiber.Ctx) error  {
 
 	response := infra.ResponseAPI("Products retrieved successfully", "success", fiber.StatusOK, products)
 	return c.JSON(response)
+
+	// fmt.Println(products)
 }
 
 func CreateProducts(c *fiber.Ctx) error  {
