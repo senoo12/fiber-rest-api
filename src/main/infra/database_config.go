@@ -1,22 +1,21 @@
 package infra
 
 import (
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
-	"Fiber/src/main/app/api/models"
+	"database/sql"
+	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 )
 
-var DB *gorm.DB
+var DB *sql.DB
 
-func ConnectDatabase()  {
-	database, err := gorm.Open(mysql.Open("root:@tcp(localhost:3306)/db_go_fiber"))
-
+func ConnectDatabase() (*sql.DB, error) {
+	db, err := sql.Open("mysql", "root:@/db_go_fiber")
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	database.AutoMigrate(&models.User{})
-	database.AutoMigrate(&models.Product{})
+	DB = db
 
-	DB = database
+	fmt.Println("Kontol")
+	return db, nil
 }
