@@ -56,8 +56,6 @@ func GetProductByID(c *fiber.Ctx) error  {
 	}
 	defer rows.Close()
 
-	var products []domainProducts.Product
-
 	for rows.Next(){
 		var product domainProducts.Product
 		if 	err := rows.Scan(&product.ID, &product.ProductName, &product.Detail, &product.Quantity); err != nil {
@@ -65,7 +63,7 @@ func GetProductByID(c *fiber.Ctx) error  {
 			return err
 		}
 		
-		products = append(products, product)
+		products = append(product)
 	}
 
 	if !rows.Next(){
